@@ -1,5 +1,6 @@
+import 'dotenv/config'; // apply env vars
 import express from 'express';
-import userRouter from './users/users.routes';
+import CharactersRouter from './characters/charcters.routes';
 
 //config
 //process.env.PORT --> the live server port
@@ -12,7 +13,7 @@ const server = express();
 server.use(express.json());
 
 //using routes
-server.use('/api/users', userRouter);
+server.use('/api/characters', CharactersRouter);
 
 //run the server
 server.listen(PORT, () => console.log(`[Server] http://localhost:${PORT}`));
