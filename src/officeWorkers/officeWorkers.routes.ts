@@ -10,14 +10,16 @@ delete (Delete) --> method: DELETE [V]
 
 //import 
 import { Router } from 'express';
-import { userLogin } from './users.controller';
+import { HoursRegistrationPerClient, OfficeWorkersLogin, ViewClientDocuments } from './officeWorkers.controller';
 
 //create the router object
-const userRouter = Router();
+const officeWorkersRouter = Router();
 
 //methods / routes -- Option 1
-userRouter.post('/login', userLogin);
-//userRouter.post('/register', register);
+officeWorkersRouter.post('/OfficeWorkersLogin', OfficeWorkersLogin); // V
+// officeWorkersRouter.post('/OfficeWorkersregister', OfficeWorkersregister); // למנהל
+officeWorkersRouter.post('/HoursRegistrationPerClient',HoursRegistrationPerClient ); // X
+officeWorkersRouter.get('/ViewClientDocuments',ViewClientDocuments); // X
 //userRouter.put('/edit', edit);
 //userRouter.delete('/delete', deleteUser);
 
@@ -29,5 +31,5 @@ userRouter.post('/login', userLogin);
 //   .delete('/delete', deleteUser)
 
 //export 
-export default userRouter;
+export default officeWorkersRouter;
 

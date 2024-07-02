@@ -1,5 +1,8 @@
 import express from 'express';
-import userRouter from './users/users.routes';
+import 'dotenv/config';
+import adminRouter from './admin/admin.routes';
+import clientsRouter from './clients/clients.routes';
+import officeWorkersRouter from './officeWorkers/officeWorkers.routes';
 
 //config
 //process.env.PORT --> the live server port
@@ -12,7 +15,10 @@ const server = express();
 server.use(express.json());
 
 //using routes
-server.use('/api/users', userRouter);
+server.use('/api/officeWorkers', officeWorkersRouter);
+server.use('/api/admin', adminRouter);
+server.use('/api/clients', clientsRouter);
+
 
 //run the server
 server.listen(PORT, () => console.log(`[Server] http://localhost:${PORT}`));
