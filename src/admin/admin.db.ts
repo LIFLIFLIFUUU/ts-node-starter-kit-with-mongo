@@ -7,6 +7,7 @@ export class AdminDB {
     admin: MongoClient;
     collection = "admin";
     clientCollection = "clients";
+    workersCollection = "office_workers";
 
     constructor() {
         this.connection_string = process.env.CONNECTION_STRING as string;
@@ -30,6 +31,18 @@ export class AdminDB {
         try {
             await this.admin.connect();
             return await this.admin.db(this.db_name).collection(this.collection).insertOne(admin);
+        } catch (error) {
+            throw error;
+        }
+        finally {
+            this.admin.close();
+        }
+    }
+
+    async getWorkerHours(query = {}, projection = {}) {
+        try {
+            await this.admin.connect();
+            return await this.admin.db(this.db_name).collection(this.workersCollection).find(query, {projection}).toArray();
         } catch (error) {
             throw error;
         }

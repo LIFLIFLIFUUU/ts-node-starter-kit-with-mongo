@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {ClientHours, OfficeWorker} from "./officeWorkers.types";
-import { add, getAllOfficeWorkers, getOfficeWorkerByID, addClientHoursToWorker } from './officeWorkers.model';
+import { add, getAllOfficeWorkers, getOfficeWorkerByID, addClientHoursToWorker, updateWorker } from './officeWorkers.model';
 import { ObjectId } from 'mongodb';
 
 export const OfficeWorkersLogin = async (req: Request, res: Response): Promise<void> => {
@@ -74,7 +74,7 @@ export function ViewClientDocuments(req: Request, res: Response) {
 export async function UpdateHours(req: Request, res: Response) {
   try {
     const workerId = new ObjectId(req.body.worker_id);
-    const clientId = req.body.client_id;
+    const clientId = new ObjectId(req.body.client_id);
     const date = new Date(req.body.date);
     const hours = req.body.hours;
 
@@ -104,12 +104,57 @@ export async function UpdateHours(req: Request, res: Response) {
     //await add(existingWorker);
 
     //TODO: write a different function to update the data
-
+    await updateWorker(existingWorker);
+    
     res.status(200).json({ msg: "Hours Updated Successfully" });
   } catch (error) {
     res.status(500).json(error);
   }
 }
+
+export async function DeleteHours(req: Request, res: Response) {
+  try {
+    const workerId = new ObjectId(req.body.worker_id);
+    const clientId = new ObjectId(req.body.client_id);
+    const date = new Date(req.body.date);
+    const hours = req.body.hours;
+
+    const existingWorker = await getOfficeWorkerByID(workerId);
+
+    if (!existingWorker) {
+      return res.status(404).json({ msg: "Office Worker not found" });
+    }
+
+    // Ensure client_hours is an array
+    existingWorker.client_hours = existingWorker.client_hours || [];
+
+    // Find the entry to update
+    const clientHourIndex = existingWorker.client_hours.findIndex(
+      (ch: any) => ch.client_id === clientId && ch.date.getTime() === date.getTime()
+    );
+
+    if (clientHourIndex !== -1) {
+      // Update existing entry
+      existingWorker.client_hours.splice(clientHourIndex, 1);
+    } 
+
+    //TODO: write a different function to update the data
+    await updateWorker(existingWorker);
+    
+    res.status(200).json({ msg: "Hours Updated Successfully" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
+// export async function UpdateData(req: Request, res: Response) {
+//   try {
+//     const workerId = new ObjectId(req.body.worker_id);
+//     const data = req.body.data;
+// } catch (error) {
+//   res.status(500).json(error);
+// }
+// }
 
 export async function GetTotalHoursPerClient(req: Request, res: Response) {
   try {

@@ -16,6 +16,10 @@ export async function addClientHoursToWorker(worker_id: ObjectId, clientHour: Cl
   return new Office_workersDB().addClientHour(worker_id, clientHour);
 }
 
+export async function updateWorker(worker: OfficeWorker): Promise<any> {
+  return new Office_workersDB().update(worker);
+}
+
 
 export async function add(officeWorker: OfficeWorker) {
   // Insert new worker
