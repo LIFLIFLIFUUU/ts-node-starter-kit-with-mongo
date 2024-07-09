@@ -11,7 +11,7 @@ delete (Delete) --> method: DELETE [V]
 
 //import 
 import { Router } from 'express';
-import { HoursRegistrationPerClient, OfficeWorkersLogin, ViewClientDocuments } from './officeWorkers.controller';
+import { GetTotalHoursPerClient, HoursRegistrationPerClient, OfficeWorkersLogin, SearchClientByID, UpdateHours, ViewClientDocuments } from './officeWorkers.controller';
 
 //create the router object
 const officeWorkersRouter = Router();
@@ -21,6 +21,11 @@ officeWorkersRouter.post('/OfficeWorkersLogin', OfficeWorkersLogin); // V
 // officeWorkersRouter.post('/OfficeWorkersregister', OfficeWorkersregister); // למנהל
 officeWorkersRouter.post('/HoursRegistrationPerClient',HoursRegistrationPerClient ); // X
 officeWorkersRouter.get('/ViewClientDocuments',ViewClientDocuments); // X
+
+officeWorkersRouter.post('/register-hours', HoursRegistrationPerClient);
+officeWorkersRouter.put('/update-hours', UpdateHours);
+officeWorkersRouter.get('/total-hours/:worker_id/:client_id', GetTotalHoursPerClient);
+officeWorkersRouter.get('/search-client/:client_id', SearchClientByID);
 //userRouter.put('/edit', edit);
 //userRouter.delete('/delete', deleteUser);
 

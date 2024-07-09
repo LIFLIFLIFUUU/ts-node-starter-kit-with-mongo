@@ -1,5 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
-import { OfficeWorker } from './officeWorkers.model';
+// import { OfficeWorker } from './officeWorkers.model';
+import {ClientHours, OfficeWorker} from "./officeWorkers.types";
 
 export class Office_workersDB {
     connection_string: string;
@@ -35,6 +36,34 @@ export class Office_workersDB {
         finally {
             this.office_worker.close();
         }
+        
+        //await this.office_worker.db(this.db_name).collection(this.collection).insertOne(office_worker);
     }
 
+    async update(officeWorker: OfficeWorker): Promise<void> {
+        try {
+            console.log('officeWorker', officeWorker)
+            await this.office_worker.db(this.db_name).collection(this.collection).updateOne(
+                { _id: new ObjectId(officeWorker._id) },
+                { $set: {...officeWorker} });
+        } catch (error) {
+            throw error;
+        }
+        finally {
+            this.office_worker.close();
+        }
+      }
+
+      async addClientHour(worker_id: ObjectId, clientHour: ClientHours): Promise<any> {
+        try {
+            return await this.office_worker.db(this.db_name).collection(this.collection).updateOne(
+                { _id: worker_id },
+                { $addToSet: { client_hours: clientHour } });
+        } catch (error) {
+            throw error;
+        }
+        finally {
+            this.office_worker.close();
+        }
+      }
 }

@@ -1,30 +1,23 @@
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import { Office_workersDB } from "./officeWorkers.db";
-
-export type OfficeWorker = {
-    _id?: ObjectId,
-    worker_name: string,
-    address: string,
-    city: string,
-    zip_code?: number,
-    mobile_number: string,
-    job_code: number,
-    work_start_date: Date,
-    personal_ID: number,
-    client_hours?: Object,
-    home_number: string,
-    password: string
-}
+import { ClientHours, OfficeWorker } from "./officeWorkers.types";
 
 export async function getAllOfficeWorkers(): Promise<any> {
-    return new Office_workersDB().findAll();
+  return new Office_workersDB().findAll();
 }
 
 export async function getOfficeWorkerByID(_id: ObjectId): Promise<any> {
-    let query = { _id: _id }
-    return new Office_workersDB().findAll(query);
+  let query = { _id: _id }
+  let worker = await new Office_workersDB().findAll(query);
+  return worker[0];
 }
 
+export async function addClientHoursToWorker(worker_id: ObjectId, clientHour: ClientHours): Promise<any> {
+  return new Office_workersDB().addClientHour(worker_id, clientHour);
+}
+
+
 export async function add(officeWorker: OfficeWorker) {
-    return new Office_workersDB().insert(officeWorker);
+  // Insert new worker
+  return new Office_workersDB().insert(officeWorker);
 }

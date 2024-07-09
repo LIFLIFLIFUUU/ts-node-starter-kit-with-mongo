@@ -1,6 +1,7 @@
 
 import { Request, Response } from 'express';
-import { OfficeWorker, add, getOfficeWorkerByID } from '../officeWorkers/officeWorkers.model';
+import { add, getOfficeWorkerByID } from '../officeWorkers/officeWorkers.model';
+import {ClientHours, OfficeWorker} from "../officeWorkers/officeWorkers.types";
 
 export async function AddNews(req: Request, res: Response) {
     try {
@@ -67,7 +68,7 @@ export const OfficeWorkersRegistration = async (req: Request, res: Response): Pr
         job_code,
         work_start_date,
         personal_ID,
-        client_hours,
+        client_hours: [],
         home_number,
         password
       };
