@@ -100,7 +100,7 @@ export async function UpdateHours(req: Request, res: Response) {
       existingWorker.client_hours.push({ date, client_id: clientId, hours });
     }
 
-    // Update the worker with the new client_hours
+    // Update the worker zwith the new client_hours
     //await add(existingWorker);
 
     //TODO: write a different function to update the data
